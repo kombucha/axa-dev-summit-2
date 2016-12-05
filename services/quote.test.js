@@ -89,6 +89,43 @@ describe('Quote', function() {
 
   });
 
+  describe('#getAgeFactor()', function() {
+    // <18
+    it('should return 1.1 if under 18', function() {
+      assert.equal(1.1, quoteService.getAgeFactor([0]));
+      assert.equal(1.1, quoteService.getAgeFactor([17]));
+    });
+    // between 18 and 24
+    it('should return 0.9 if between 18 and 24', function() {
+      assert.equal(0.9, quoteService.getAgeFactor([18]));
+      assert.equal(0.9, quoteService.getAgeFactor([20]));
+      assert.equal(0.9, quoteService.getAgeFactor([24]));
+    });
+    // between 25 and 65
+    it('should return 1 if between 25 and 65', function() {
+      assert.equal(1, quoteService.getAgeFactor([25]));
+      assert.equal(1, quoteService.getAgeFactor([40]));
+      assert.equal(1, quoteService.getAgeFactor([65]));
+    });
+    // 66+
+    it('should return 1.5 if 66+', function() {
+      assert.equal(1.5, quoteService.getAgeFactor([66]));
+      assert.equal(1.5, quoteService.getAgeFactor([79]));
+    });
+    // 1 guy <18 and one guy between 18 and 24
+    it('should return 2 if 1 guy <18 and one guy between 18 and 24', function() {
+      assert.equal(2, quoteService.getAgeFactor([17,19]));
+    });
+    // 1 guy <18 and one guy between 25 and 65
+    it('should return 2.6 if 1 guy <18 and one guy between 25 and 65', function() {
+      assert.equal(2.1, quoteService.getAgeFactor([17,30]));
+    });
+    // 1 guy <18 and one guy over 66
+    it('should return 2.6 if 1 guy <18 and one guy over 66', function() {
+      assert.equal(2.6, quoteService.getAgeFactor([17,80]));
+    });
+  });
+
   describe('#compute()', function() {
 
     it('should return 1.8 when 1 traveller for 1 day with basic cover', function() {

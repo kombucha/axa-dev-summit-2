@@ -67,5 +67,6 @@ function compute(params) {
 
 module.exports = {
   validateParams,
-  compute
+  compute,
+  getAgeFactor
 };
