@@ -60,13 +60,12 @@ function validateDates(departureDateStr, returnDateStr) {
 }
 
 // Public
-// function validateParams(params) {
-//   return true;
-//   // return validateCountry(params.country)
-//   //   && validateOptions(params.options)
-//   //   && validateCover(params.cover)
-//   //   && validateDates(params.departureDate, params.returnDate);
-// }
+function validateParams(params) {
+  return validateCountry(params.country)
+      && validateOptions(params.options)
+      && validateCover(params.cover)
+      && validateDates(params.departureDate, params.returnDate);
+}
 
 function getCoverFactor(cover) {
   return COVER_FACTORS[cover.toLowerCase()];
@@ -108,6 +107,7 @@ function compute(params) {
 }
 
 module.exports = {
-  // validateParams,
+  validateParams,
+  getAgeFactor,
   compute
 };

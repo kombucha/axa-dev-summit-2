@@ -2,6 +2,7 @@ const assert = require('assert');
 const quoteService = require('./quote');
 
 describe('Quote', function() {
+  
   describe('#validateParams()', function() {
     
     //Bad country
@@ -86,9 +87,48 @@ describe('Quote', function() {
       assert.equal(false, quoteService.validateParams(paramsWithBadOptionsFormat));
     });
 
+    //Prod
+    it('should return true with production', function() {
+        var params = { country: 'FR',
+         departureDate: '2017-01-22',
+         returnDate: '2017-03-06',
+         travellerAges: [ 35, 1 ],
+         options: [],
+         cover: 'Basic' };
+        assert.equal(true, quoteService.validateParams(params));
+        params = { country: 'PT',
+         departureDate: '2017-03-06',
+         returnDate: '2017-04-02',
+         travellerAges: [ 59, 67, 36 ],
+         options: [ 'Skiing', 'Medical' ],
+         cover: 'Basic' };
+        assert.equal(true, quoteService.validateParams(params));
+        params = { country: 'RO',
+         departureDate: '2016-12-11',
+         returnDate: '2017-01-14',
+         travellerAges: [ 30 ],
+         options: [ 'Medical', 'Yoga' ],
+         cover: 'Basic' };
+        assert.equal(true, quoteService.validateParams(params));
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   });
-
+  
   describe('#getAgeFactor()', function() {
     // <18
     it('should return 1.1 if under 18', function() {
