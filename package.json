@@ -8,5 +8,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
+  "repository": "https://github.com/kombucha/axa-dev-summit-2",
   "license": "ISC"
 }
