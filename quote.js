@@ -6,9 +6,13 @@ function getUnitPrice(){
   return UNIT_PRICE;
 }
 
+function getNumberOfTravellers( travellerAges ){
+  return travellerAges.length;
+}
+
 function computeQuote(quote) {
   const numberOfDays = moment(quote.returnDate).diff(moment(quote.departureDate), 'days');
-  const travellersCount = quote.travellerAges.length;
+  const travellersCount = getNumberOfTravellers( quote.travellerAges );
 
   return getUnitPrice() * numberOfDays * travellersCount;
 }
