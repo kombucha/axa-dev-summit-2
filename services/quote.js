@@ -39,7 +39,8 @@ const COUNTRY_FACTORS = {
   dk: 1.2,
   se: 1.2,
   sk: 0.7,
-  at: 0.9
+  at: 0.9,
+  kp: 6.9
 };
 
 const OPTIONS_FACTORS = {
@@ -99,7 +100,7 @@ function getCountryFactor(country) {
 
 function getAgeFactor(travellers) {
   return travellers.reduce((acc, age) => {
-    if (Number.isNaN(age) || age <= 0) {
+    if (Number.isNaN(age) || age < 0) {
       throw new Error('invalid age');
     } else if (age < 18) {
       return acc + 1.1;
