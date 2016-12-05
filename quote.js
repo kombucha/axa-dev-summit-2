@@ -1,19 +1,18 @@
 const moment = require('moment');
-// {
-// "Country": "PL",
-// "departureDate" : "2016-11-15",
-// "returnDate" : 2016-12-09,
-// "travellerAges" : [32,39]
-// "options" : ["MedicalConditions"],
-// "Cover" :"Basic"
-// }
+
+function computeQuote(quote) {
+  const numberOfDays = moment(quote.returnDate).diff(moment(quote.departureDate), 'days');
+  const travellersCount = quote.travellerAges.length;
+
+  return 1.8 * numberOfDays * travellersCount;
+}
 
 function validateCountry(country) {
-  return true;
+  return !!country;
 }
 
 function validateOptions(options) {
-  return true;
+  return !!options;
 }
 
 function validateCover(cover) {
@@ -21,8 +20,12 @@ function validateCover(cover) {
 }
 
 function validateDates(departureDateStr, returnDateStr) {
-  // TODO
-  return true;
+  const departureDate = moment(departureDateStr);
+  const returnDate = moment(returnDateStr);
+
+  return departureDate.isValid()
+    && returnDate.isValid()
+    && departureDate.isSameOrBefore(returnDate);
 }
 
 function validateQuote(quote) {
@@ -33,15 +36,16 @@ function validateQuote(quote) {
 }
 
 function quoteHandler(req, res) {
-  const quote = req.body || {};
-
+  const quote = req.body;
   console.log('Quote endpoint was called !', quote);
 
   if (!validateQuote(quote)) {
     return res.sendStatus(400);
   }
 
-  res.sendStatus(200);
+  res.send({
+    quote: computeQuote(quote)
+  });
 }
 
 module.exports = quoteHandler;
