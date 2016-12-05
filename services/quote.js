@@ -58,8 +58,21 @@ function getAgeFactor(travellers) {
   }, 0);
 }
 
-function getOptionsQuote() {
-  return 0;
+function getOptionsQuote(options) {
+  return options.reduce((acc, option) => {
+    switch (option.toLowerCase()) {
+      case 'skiing':
+        return 24;
+      case 'medical':
+        return 72;
+      case 'scuba':
+        return 36;
+      case 'sports':
+        return 25;
+      case 'yoga':
+        return -3;
+    }
+  }, 0);
 }
 
 function getTimeFactor(departureDate, returnDate) {
