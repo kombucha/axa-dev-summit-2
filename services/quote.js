@@ -44,8 +44,18 @@ function getCountryFactor() {
   return 1;
 }
 
-function getAgeFactor() {
-  return 1;
+function getAgeFactor(travellers) {
+  return travellers.reduce((acc, age) => {
+    if (age < 18) {
+      return 1.1;
+    } else if (age >= 18 && age <= 24) {
+      return 0.9;
+    } else if (age >= 25 && age <= 65) {
+      return 1.0;
+    } else {
+      return 1.5;
+    }
+  }, 0);
 }
 
 function getOptionsQuote() {
