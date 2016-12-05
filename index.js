@@ -9,8 +9,8 @@ const debugMiddleware = require('./middlewares/debug');
 
 const app = express();
 
-app.use(debugMiddleware);
 app.use(bodyParser.json());
+app.use(debugMiddleware);
 
 app.post('/quote', quoteHandler);
 app.post('/feedback', feedbackHandler);
