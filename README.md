@@ -11,6 +11,11 @@ Pre-requisites:
 npm i
 ```
 
+Start the application in dev mode (livereload)
+```sh
+npm run dev
+```
+
 Start the application
 
 ```sh
