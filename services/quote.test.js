@@ -112,27 +112,12 @@ describe('Quote', function() {
         assert.equal(true, quoteService.validateParams(params));
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   });
   
   describe('#getAgeFactor()', function() {
     // <18
     it('should return 1.1 if under 18', function() {
-      assert.equal(1.1, quoteService.getAgeFactor([0]));
+      assert.equal(1.1, quoteService.getAgeFactor([1]));
       assert.equal(1.1, quoteService.getAgeFactor([17]));
     });
     // between 18 and 24
@@ -175,17 +160,14 @@ describe('Quote', function() {
   });
 
   describe('#compute()', function() {
-
-    it('should return 82.08 when 1 traveller for 1 day with basic cover', function() {
-      const params = {
-        "country" : "DE", // 0.8
-        "departureDate" : "2016-12-09", //1 day ==> 7 days
-        "returnDate" : "2016-12-10",
-        "travellerAges" : [32], // 1
-        "options" : ["Medical"], //72
-        "cover" :"Basic" //1.8
-      };
-      assert.equal(quoteService.compute(params), 82.08);
+    it('should return 138.4 when 1 traveller for 1 day with basic cover', function() {
+      const params = { country: 'IT',
+         departureDate: '2017-01-30',
+         returnDate: '2017-03-02',
+         travellerAges: [ 56, 87, 65 ],
+         options: [ 'Yoga' ],
+         cover: 'Basic' };
+      assert.equal(quoteService.compute(params), 264.84);
     });
   });
 });
