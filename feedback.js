@@ -1,6 +1,6 @@
 function feedbackHandler(req, res) {
-  console.log('Feedback endpoint was called !');
-  res.send(400);
+  console.log('Feedback called');
+  res.sendStatus(200);
 }
 
 module.exports = feedbackHandler;
