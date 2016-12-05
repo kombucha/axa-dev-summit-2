@@ -88,4 +88,19 @@ describe('Quote', function() {
 
 
   });
+
+  describe('#compute()', function() {
+
+    it('should return 1.8 when 1 traveller for 1 day with basic cover', function() {
+      const params = {
+        "country" : "PL",
+        "departureDate" : "2016-12-09",
+        "returnDate" : "2016-12-10",
+        "travellerAges" : [32],
+        "options" : "MedicalConditions", 
+        "cover" :"Basic"
+      };
+      assert.equal(1.8, quoteService.compute(params));
+    });
+  });
 });
