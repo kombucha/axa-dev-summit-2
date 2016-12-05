@@ -1,10 +1,16 @@
 const moment = require('moment');
+const UNIT_PRICE = 1.8;
+
+
+function getUnitPrice(){
+  return UNIT_PRICE;
+}
 
 function computeQuote(quote) {
   const numberOfDays = moment(quote.returnDate).diff(moment(quote.departureDate), 'days');
   const travellersCount = quote.travellerAges.length;
 
-  return 1.8 * numberOfDays * travellersCount;
+  return getUnitPrice() * numberOfDays * travellersCount;
 }
 
 function validateCountry(country) {
