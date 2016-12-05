@@ -124,6 +124,14 @@ describe('Quote', function() {
     it('should return 2.6 if 1 guy <18 and one guy over 66', function() {
       assert.equal(2.6, quoteService.getAgeFactor([17,80]));
     });
+    // 1 guy <18 and two guy over 66
+    it('should return 4.1 if 1 guy <18 and one guy over 66', function() {
+      assert.equal(4.1, quoteService.getAgeFactor([17,81,80]));
+    });
+    // 1 guy <18 and two guy over 66 and 3 guys between 25-65
+    it('should return 7.1 if 1 guy <18 and one guy over 66', function() {
+      assert.equal(7.1, quoteService.getAgeFactor([17, 30, ,81, 31,80, 61]));
+    });
   });
 
   describe('#compute()', function() {
