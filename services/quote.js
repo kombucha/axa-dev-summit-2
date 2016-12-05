@@ -6,6 +6,21 @@ const COVER_FACTORS = {
   premium: 4.2
 };
 
+const COUNTRY_FACTORS = {
+   germany: 0.8,
+   france: 1.0,
+   spain:1.1
+};
+
+const OPTIONS_FACTORS = {
+  'skiing': 24,
+  'medical': 72,
+  'scuba': 36,
+  'sports': 25,
+  'yoga': -3
+};
+
+
 function validateCountry(country) {
   return !!country;
 }
@@ -40,38 +55,27 @@ function getCoverFactor(cover) {
   return COVER_FACTORS[cover.toLowerCase()];
 }
 
-function getCountryFactor() {
-  return 1;
+function getCountryFactor(country) {
+  return COUNTRY_FACTORS[country.toLowerCase()];
 }
 
 function getAgeFactor(travellers) {
   return travellers.reduce((acc, age) => {
     if (age < 18) {
-      return 1.1;
+      return acc + 1.1;
     } else if (age >= 18 && age <= 24) {
-      return 0.9;
+      return acc + 0.9;
     } else if (age >= 25 && age <= 65) {
-      return 1.0;
+      return acc + 1.0;
     } else {
-      return 1.5;
+      return acc + 1.5;
     }
   }, 0);
 }
 
 function getOptionsQuote(options) {
   return options.reduce((acc, option) => {
-    switch (option.toLowerCase()) {
-      case 'skiing':
-        return 24;
-      case 'medical':
-        return 72;
-      case 'scuba':
-        return 36;
-      case 'sports':
-        return 25;
-      case 'yoga':
-        return -3;
-    }
+    return acc + OPTIONS_FACTORS[option.toLowerCase()];
   }, 0);
 }
 
@@ -83,7 +87,7 @@ function getTimeFactor(departureDate, returnDate) {
 function compute(params) {
   return (getCoverFactor(params.cover)
     * getCountryFactor(params.country)
-    * getAgeFactor(params.travellers)
+    * getAgeFactor(params.travellerAges)
     * getTimeFactor(params.departureDate, params.returnDate))
     + getOptionsQuote(params.options);
 }
