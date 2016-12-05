@@ -1,5 +1,5 @@
 function log(req, res) {
-  console.log('TODO');
+  // TODO
   res.sendStatus(400);
 }
 

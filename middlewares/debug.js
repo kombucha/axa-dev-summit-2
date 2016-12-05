@@ -1,5 +1,5 @@
 function debugMiddleware(req, res, next) {
-  console.log('Got a call on ', req.url);
+  console.log(req.method, req.url, req.body);
   next();
 }
 
