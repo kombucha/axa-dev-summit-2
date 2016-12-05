@@ -7,9 +7,28 @@ const COVER_FACTORS = {
 };
 
 const COUNTRY_FACTORS = {
-   germany: 0.8,
-   france: 1.0,
-   spain:1.1
+  de: 0.8,
+  fr: 1.0,
+  es: 1.1,
+  th: 1.6,
+  ee: 1.3,
+  lu: 1.3,
+  gr: 0.6,
+  it: 1.2,
+  bg: 1.1,
+  sw: 1.2,
+  pa: 1.6,
+  pn: 1.2,
+  qa: 1.6,
+  ro: 1.3,
+  lt: 0.7,
+  uy: 1.6,
+  fi: 0.8,
+  hr: 1.3,
+  lv: 0.6,
+  uk: 1.1,
+  nl: 0.7,
+  pl: 1.4
 };
 
 const OPTIONS_FACTORS = {
@@ -19,7 +38,6 @@ const OPTIONS_FACTORS = {
   'sports': 25,
   'yoga': -3
 };
-
 
 function validateCountry(country) {
   return !!country;
@@ -38,18 +56,17 @@ function validateDates(departureDateStr, returnDateStr) {
   const departureDate = moment(departureDateStr);
   const returnDate = moment(returnDateStr);
 
-  return departureDate.isValid()
-    && returnDate.isValid()
-    && departureDate.isSameOrBefore(returnDate);
+  return departureDate.isValid() && returnDate.isValid() && departureDate.isSameOrBefore(returnDate);
 }
 
 // Public
-function validateParams(params) {
-  return validateCountry(params.country)
-    && validateOptions(params.options)
-    && validateCover(params.cover)
-    && validateDates(params.departureDate, params.returnDate);
-}
+// function validateParams(params) {
+//   return true;
+//   // return validateCountry(params.country)
+//   //   && validateOptions(params.options)
+//   //   && validateCover(params.cover)
+//   //   && validateDates(params.departureDate, params.returnDate);
+// }
 
 function getCoverFactor(cover) {
   return COVER_FACTORS[cover.toLowerCase()];
@@ -81,19 +98,16 @@ function getOptionsQuote(options) {
 
 function getTimeFactor(departureDate, returnDate) {
   const numberOfDays = moment(returnDate).diff(moment(departureDate), 'days');
-  return numberOfDays <= 7 ? 7 : numberOfDays;
+  return numberOfDays <= 7
+    ? 7
+    : numberOfDays;
 }
 
 function compute(params) {
-  return (getCoverFactor(params.cover)
-    * getCountryFactor(params.country)
-    * getAgeFactor(params.travellerAges)
-    * getTimeFactor(params.departureDate, params.returnDate))
-    + getOptionsQuote(params.options);
+  return (getCoverFactor(params.cover) * getCountryFactor(params.country) * getAgeFactor(params.travellerAges) * getTimeFactor(params.departureDate, params.returnDate)) + getOptionsQuote(params.options);
 }
 
 module.exports = {
-  validateParams,
-  compute,
-  getAgeFactor
+  // validateParams,
+  compute
 };

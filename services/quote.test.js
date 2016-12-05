@@ -136,16 +136,16 @@ describe('Quote', function() {
 
   describe('#compute()', function() {
 
-    it('should return 1.8 when 1 traveller for 1 day with basic cover', function() {
+    it('should return 82.08 when 1 traveller for 1 day with basic cover', function() {
       const params = {
-        "country" : "PL",
-        "departureDate" : "2016-12-09",
+        "country" : "DE", // 0.8
+        "departureDate" : "2016-12-09", //1 day ==> 7 days
         "returnDate" : "2016-12-10",
-        "travellerAges" : [32],
-        "options" : "MedicalConditions", 
-        "cover" :"Basic"
+        "travellerAges" : [32], // 1
+        "options" : ["Medical"], //72
+        "cover" :"Basic" //1.8
       };
-      assert.equal(1.8, quoteService.compute(params));
+      assert.equal(quoteService.compute(params), 82.08);
     });
   });
 });
