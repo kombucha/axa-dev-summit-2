@@ -1,14 +1,10 @@
 const moment = require('moment');
 
-const UNIT_PRICE = 1.8;
-
-function getUnitPrice(){
-  return UNIT_PRICE;
-}
-
-function getNumberOfTravellers( travellerAges ){
-  return travellerAges.length;
-}
+const COVER_FACTORS = {
+  basic: 1.8,
+  extra: 2.4,
+  premium: 4.2
+};
 
 function validateCountry(country) {
   return !!country;
@@ -19,6 +15,7 @@ function validateOptions(options) {
 }
 
 function validateCover(cover) {
+  // return ['basic', 'extra', 'premium'].indexOf(cover) !== -1;
   return cover === 'Basic';
 }
 
@@ -39,11 +36,33 @@ function validateParams(params) {
     && validateDates(params.departureDate, params.returnDate);
 }
 
-function compute(params) {
-  const numberOfDays = moment(params.returnDate).diff(moment(params.departureDate), 'days');
-  const travellersCount = getNumberOfTravellers(params.travellerAges);
+function getCoverFactor(cover) {
+  return COVER_FACTORS[cover.toLowerCase()];
+}
 
-  return getUnitPrice() * numberOfDays * travellersCount;
+function getCountryFactor() {
+  return 1;
+}
+
+function getAgeFactor() {
+  return 1;
+}
+
+function getOptionsQuote() {
+  return 0;
+}
+
+function getTimeFactor(departureDate, returnDate) {
+  const numberOfDays = moment(returnDate).diff(moment(departureDate), 'days');
+  return numberOfDays <= 7 ? 7 : numberOfDays;
+}
+
+function compute(params) {
+  return (getCoverFactor(params.cover)
+    * getCountryFactor(params.country)
+    * getAgeFactor(params.travellers)
+    * getTimeFactor(params.departureDate, params.returnDate))
+    + getOptionsQuote(params.options);
 }
 
 module.exports = {
