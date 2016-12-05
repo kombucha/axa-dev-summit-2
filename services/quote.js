@@ -3,7 +3,8 @@ const moment = require('moment');
 const COVER_FACTORS = {
   basic: 1.8,
   extra: 2.4,
-  premium: 4.2
+  premium: 4.2,
+  premier: 4.2
 };
 
 const COUNTRY_FACTORS = {
@@ -28,7 +29,17 @@ const COUNTRY_FACTORS = {
   lv: 0.6,
   uk: 1.1,
   nl: 0.7,
-  pl: 1.4
+  pl: 1.4,
+  pt: 0.5,
+  hu: 1.1,
+  be: 0.9,
+  cz: 1.2,
+  ie: 1.1,
+  mk: 1.6,
+  dk: 1.2,
+  se: 1.2,
+  sk: 0.7,
+  at: 0.9
 };
 
 const OPTIONS_FACTORS = {
@@ -68,16 +79,28 @@ function validateParams(params) {
 }
 
 function getCoverFactor(cover) {
-  return COVER_FACTORS[cover.toLowerCase()];
+  const value = COVER_FACTORS[cover.toLowerCase()];
+
+  if (!value) {
+    throw new Error('i dont care');
+  }
+
+  return value;
 }
 
 function getCountryFactor(country) {
-  return COUNTRY_FACTORS[country.toLowerCase()];
+  const value = COUNTRY_FACTORS[country.toLowerCase()];
+  if (!value) {
+    throw new Error('Sod off');
+  }
+  return value;
 }
 
 function getAgeFactor(travellers) {
   return travellers.reduce((acc, age) => {
-    if (age < 18) {
+    if (Number.isNaN(age) || age <= 0) {
+      throw new Error('nope');
+    } else if (age < 18) {
       return acc + 1.1;
     } else if (age >= 18 && age <= 24) {
       return acc + 0.9;
