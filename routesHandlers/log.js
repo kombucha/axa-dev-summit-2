@@ -1,8 +1,8 @@
-const fs = require('fs');
+const ts = require('tail-stream');
 const config = require('../config');
 
 function log(req, res) {
-  fs.createReadStream(config.logPath)
+  ts.createReadStream(config.logPath)
     .pipe(res);
 }
 
