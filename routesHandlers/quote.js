@@ -12,6 +12,7 @@ function quoteHandler(req, res) {
       quote: quoteService.compute(quoteParams)
     });
   } catch(e) {
+    console.log(e);
     res.sendStatus(400);
   }
 
