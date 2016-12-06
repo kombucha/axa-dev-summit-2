@@ -1,5 +1,12 @@
 const toRoman = require('roman-numerals').toRoman
 
+const ROMAN_PRICES = {
+  I: 1,
+  V: 4.2,
+  X: 8.4,
+  L: 42
+};
+
 function toRomanNumerals(i) {
   return toRoman(i);
 }
@@ -9,25 +16,22 @@ function toRomanPrice(romanNumeral) {
     throw new Error();
   }
 
-  const romanValues = {
-    I: 1,
-    V: 4.4,
-    X: 8.4,
-    L: 39
-  };
-
   let result = 0;
 
-  for(let i = 0; i < romanNumeral.length-1;i++){
-    if(romanValues[romanNumeral[i]] >= romanValues[romanNumeral[i+1]]){
-      result += romanValues[romanNumeral[i]];
+  for(let i = 0; i < romanNumeral.length-1;i++) {
+    let romanLetter = romanNumeral[i];
+    let nextRomanLetter = romanNumeral[i+1];
+
+    if(ROMAN_PRICES[romanLetter] >= ROMAN_PRICES[nextRomanLetter]){
+      result += ROMAN_PRICES[romanLetter];
     }
     else{
-      result -= romanValues[romanNumeral[i]];
+      result -= ROMAN_PRICES[romanLetter];
     }
   }
 
-  return round(result + romanValues[romanNumeral[romanNumeral.length-1]]);
+  let lastLetter = romanNumeral[romanNumeral.length-1];
+  return round(result + ROMAN_PRICES[lastLetter]);
 }
 
 function round(number){

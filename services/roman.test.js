@@ -30,24 +30,24 @@ describe('Roman', function() {
       assert.equal(3, romanPrice);
     });
 
-    it('should convert IV to 3.4', function(){
+    it('should convert IV to 3.2', function(){
       const romanPrice = romanService.toRomanPrice('IV');
-      assert.equal(3.4, romanPrice);
+      assert.equal(3.2, romanPrice);
     });
 
-    it('should convert V to 4.4', function(){
+    it('should convert V to 4.2', function(){
       const romanPrice = romanService.toRomanPrice('V');
-      assert.equal(4.4, romanPrice);
+      assert.equal(4.2, romanPrice);
     });
 
-    it('should convert LXXVII to 62.2', function(){
+    it('should convert LXXVII to 65', function(){
       const romanPrice = romanService.toRomanPrice('LXXVII');
-      assert.equal(62.2, romanPrice);
+      assert.equal(65, romanPrice);
     });
 
-    it('should convert XXXIV to 28.6', function(){
+    it('should convert XXXIV to 28.4', function(){
       const romanPrice = romanService.toRomanPrice('XXXIV');
-      assert.equal(28.6, romanPrice);
+      assert.equal(28.4, romanPrice);
     });
   });
 });
