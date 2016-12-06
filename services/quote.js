@@ -112,21 +112,8 @@ function getCountryFactor(country) {
   return value;
 }
 
-function getAgeFactor(travellers) {
+function computeCorrection(travellers) {
   let correction = 1;
-  let value = travellers.reduce((acc, age) => {
-    if (Number.isNaN(age) || age < 0) {
-      throw new Error(`Invalid age ${age} (${travellers})`);
-    } else if (age < 18) {
-      return acc + 1.1;
-    } else if (age >= 18 && age <= 24) {
-      return acc + 0.9;
-    } else if (age >= 25 && age <= 65) {
-      return acc + 1.0;
-    } else {
-      return acc + 1.5;
-    }
-  }, 0);
 
   const numberOfKids = travellers.filter((age) => age < 18).length;
   const numberOfAdults = travellers.filter((age) => (age >= 25 && age < 65)).length;
@@ -159,7 +146,25 @@ function getAgeFactor(travellers) {
     correction += 0.05;
   }
 
-  return value * correction;
+  return correction;
+}
+
+function getAgeFactor(travellers) {
+  let value = travellers.reduce((acc, age) => {
+    if (Number.isNaN(age) || age < 0) {
+      throw new Error(`Invalid age ${age} (${travellers})`);
+    } else if (age < 18) {
+      return acc + 1.1;
+    } else if (age >= 18 && age <= 24) {
+      return acc + 0.9;
+    } else if (age >= 25 && age <= 65) {
+      return acc + 1.0;
+    } else {
+      return acc + 1.5;
+    }
+  }, 0);
+
+  return value;
 }
 
 function getOptionsQuote(options) {
@@ -183,7 +188,15 @@ function getTimeFactor(departureDate, returnDate) {
 }
 
 function compute(params) {
-  return (getCoverFactor(params.cover) * getCountryFactor(params.country) * getAgeFactor(params.travellerAges) * getTimeFactor(params.departureDate, params.returnDate)) + getOptionsQuote(params.options);
+  const correction = computeCorrection(params.travellerAges);
+
+  return correction * ((
+    getCoverFactor(params.cover)
+    * getCountryFactor(params.country)
+    * getAgeFactor(params.travellerAges)
+    * getTimeFactor(params.departureDate, params.returnDate)
+  )
+    + getOptionsQuote(params.options));
 }
 
 module.exports = {
