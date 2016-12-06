@@ -43,7 +43,19 @@ const COUNTRY_FACTORS = {
   at: 0.9,
   kp: 6.9,
   si: 0.8,
-  el: 0.6
+  el: 0.6,
+  do: 0.6,
+  im: 1.2,
+  hm: 0.7,
+  mt: 1.2,
+  sz: 3.7,
+  eg: 0.9,
+  mx: 1.6,
+  cy: 1.6,
+  td: 1.3,
+  wf: 1.5,
+  za: 1.6,
+  tw: 1.6
 };
 
 const OPTIONS_FACTORS = {
