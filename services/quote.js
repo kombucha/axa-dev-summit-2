@@ -83,7 +83,7 @@ function getCoverFactor(cover) {
   const value = COVER_FACTORS[cover.toLowerCase()];
 
   if (!value) {
-    throw new Error('we dont have that cover');
+    throw new Error(`Unhandled ${cover}`);
   }
 
   return value;
@@ -92,7 +92,7 @@ function getCoverFactor(cover) {
 function getCountryFactor(country) {
   const value = COUNTRY_FACTORS[country.toLowerCase()];
   if (!value) {
-    throw new Error('we dont have that country');
+    throw new Error(`Unhandled country ${country}`);
   }
   return value;
 }
@@ -100,7 +100,7 @@ function getCountryFactor(country) {
 function getAgeFactor(travellers) {
   return travellers.reduce((acc, age) => {
     if (Number.isNaN(age) || age < 0) {
-      throw new Error('invalid age');
+      throw new Error(`Invalid age ${age} (${travellers})`);
     } else if (age < 18) {
       return acc + 1.1;
     } else if (age >= 18 && age <= 24) {
@@ -118,7 +118,7 @@ function getOptionsQuote(options) {
     const optionValue = OPTIONS_FACTORS[option.toLowerCase()];
 
     if (!optionValue) {
-      throw new Error('invalid option')
+      throw new Error(`Unhandled option ${option} (${options})`)
     }
 
     return acc + optionValue;
