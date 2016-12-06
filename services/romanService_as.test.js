@@ -36,8 +36,8 @@ describe('#romanPrice()', function() {
     });
 
     // 14  is XIV is 8.4 -1 + 4.2
-    it('should return 11.8 if 14', function() {
-      assert.equal(8.4 -1 + 4.2, romanService.toRomanPrice(romanService.toRomanNumerals(14)));
+    it('should return ' +(8.4 -1 + 4.2)+' if 14', function() {
+      assert.ok(0.1 > Math.abs(8.4 -1 + 4.2 - romanService.toRomanPrice(romanService.toRomanNumerals(14))));
     });
 
     // 39  is XXXIX is 4*8.4 -1
@@ -46,12 +46,9 @@ describe('#romanPrice()', function() {
     });
 
 
-
-
-
     // -1 is invalid
     it('should return error if -1', function() {
-      assert.throws( romanService.toRomanPrice(romanService.toRomanNumerals(-1)));
+      assert.throws( () => {romanService.toRomanPrice(romanService.toRomanNumerals(-1));}, Error);
     });
 
 
