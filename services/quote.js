@@ -113,6 +113,7 @@ function getCountryFactor(country) {
 }
 
 function getAgeFactor(travellers) {
+  let correction = 1;
   let value = travellers.reduce((acc, age) => {
     if (Number.isNaN(age) || age < 0) {
       throw new Error(`Invalid age ${age} (${travellers})`);
@@ -126,22 +127,22 @@ function getAgeFactor(travellers) {
       return acc + 1.5;
     }
   }, 0);
+
   const numberOfKids = travellers.filter((age) => age < 18).length;
   const numberOfAdults = travellers.filter((age) => (age >= 25 && age < 65)).length;
   const numberOfYoungAdults = travellers.filter((age) => (age >= 18 && age < 25)).length;
 
   // Kids penalty 15%
   if (numberOfKids > numberOfAdults) {
-    value = value * 1.15;
+    correction += 0.15;
   }
 
   // Young adults 10% off
   if (numberOfYoungAdults === 2) {
-    value = value * 0.9;
+    correction -= 0.1;
   }
-
-  if(numberOfYoungAdults >= 5){
-    value = value * 0.9;
+  if(numberOfYoungAdults >= 5) {
+    correction -= 0.1;
   }
 
   // Family 20% off
@@ -150,15 +151,15 @@ function getAgeFactor(travellers) {
     const atLeastTwoAdults = numberOfAdults >= 2;
     const isFamily = atLeastTwoAdults && atLeastTwoKids;
 
-    value = isFamily ? value * 0.8 : value;
+    correction -= isFamily ? 0.2 : 0;
   }
 
-  //Travelling alone malus
+  // Travelling alone malus
   if(travellers.length === 1){
-    value = value * 1.05;
+    correction += 0.05;
   }
 
-  return value;
+  return value * correction;
 }
 
 function getOptionsQuote(options) {
