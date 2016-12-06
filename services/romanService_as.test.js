@@ -46,7 +46,10 @@ describe('#romanPrice()', function() {
     });
 
 
-    // 39  is XXXIX is 4*8.4 -1
+
+
+
+    // -1 is invalid
     it('should return error if -1', function() {
       assert.throws( romanService.toRomanPrice(romanService.toRomanNumerals(-1)));
     });
