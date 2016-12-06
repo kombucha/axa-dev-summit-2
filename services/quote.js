@@ -114,8 +114,15 @@ function getOptionsQuote(options) {
   }, 0);
 }
 
-function getTimeFactor(departureDate, returnDate) {
-  return romanService.toRomanPrice(romanService.toRomanNumerals(moment(returnDate).diff(moment(departureDate), 'days')));
+function getTimeFactor(departureDateStr, returnDateStr) {
+  const departureDate = moment(departureDateStr);
+  const returnDate = moment(returnDateStr);
+
+  if (departureDate.isAfter(returnDate, 'day')) {
+    throw new Error('Invalid dates');
+  }
+
+  return romanService.toRomanPrice(romanService.toRomanNumerals(returnDate.diff(departureDate, 'days')));
 }
 
 function compute(params) {
