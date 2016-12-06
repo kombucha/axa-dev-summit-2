@@ -1,5 +1,6 @@
 const moment = require('moment');
 const logger = require('./logger');
+const romanService = require('./roman');
 
 const COVER_FACTORS = {
   basic: 1.8,
@@ -114,7 +115,7 @@ function getOptionsQuote(options) {
 }
 
 function getTimeFactor(departureDate, returnDate) {
-  return moment(returnDate).diff(moment(departureDate), 'days');
+  return romanService.toRomanPrice(romanService.toRomanNumerals(moment(returnDate).diff(moment(departureDate), 'days')));
 }
 
 function compute(params) {

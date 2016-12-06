@@ -12,7 +12,6 @@ function quoteHandler(req, res) {
     logger.error(e);
     res.sendStatus(204);
   }
-
 }
 
 module.exports = quoteHandler;
