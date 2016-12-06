@@ -66,34 +66,6 @@ const OPTIONS_FACTORS = {
   'yoga': -3
 };
 
-function validateCountry(country) {
-  return !!country;
-}
-
-function validateOptions(options) {
-  return !!options;
-}
-
-function validateCover(cover) {
-  // return ['basic', 'extra', 'premium'].indexOf(cover) !== -1;
-  return cover === 'Basic';
-}
-
-function validateDates(departureDateStr, returnDateStr) {
-  const departureDate = moment(departureDateStr);
-  const returnDate = moment(returnDateStr);
-
-  return departureDate.isValid() && returnDate.isValid() && departureDate.isSameOrBefore(returnDate);
-}
-
-// Public
-function validateParams(params) {
-  return validateCountry(params.country)
-      && validateOptions(params.options)
-      && validateCover(params.cover)
-      && validateDates(params.departureDate, params.returnDate);
-}
-
 function getCoverFactor(cover) {
   const value = COVER_FACTORS[cover.toLowerCase()];
 
@@ -150,7 +122,7 @@ function computeCorrection(travellers) {
 }
 
 function getAgeFactor(travellers) {
-  let value = travellers.reduce((acc, age) => {
+  return travellers.reduce((acc, age) => {
     if (Number.isNaN(age) || age < 0) {
       throw new Error(`Invalid age ${age} (${travellers})`);
     } else if (age < 18) {
@@ -163,8 +135,6 @@ function getAgeFactor(travellers) {
       return acc + 1.5;
     }
   }, 0);
-
-  return value;
 }
 
 function getOptionsQuote(options) {
@@ -200,7 +170,5 @@ function compute(params) {
 }
 
 module.exports = {
-  validateParams,
-  getAgeFactor,
   compute
 };
