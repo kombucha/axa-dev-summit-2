@@ -1,4 +1,5 @@
 const quoteService = require('../services/quote');
+const logger = require('../services/logger');
 
 function quoteHandler(req, res) {
   const quoteParams = req.body;
@@ -12,7 +13,7 @@ function quoteHandler(req, res) {
       quote: quoteService.compute(quoteParams)
     });
   } catch(e) {
-    console.log(e);
+    logger.error(e);
     res.sendStatus(400);
   }
 

@@ -1,6 +1,9 @@
+const fs = require('fs');
+const config = require('../config');
+
 function log(req, res) {
-  // TODO
-  res.sendStatus(400);
+  fs.createReadStream(config.logPath)
+    .pipe(res);
 }
 
 module.exports = log;

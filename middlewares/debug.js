@@ -1,5 +1,7 @@
+const logger = require('../services/logger');
+
 function debugMiddleware(req, res, next) {
-  console.log(req.method, req.url, req.body);
+  logger.info(req.method, req.url, req.body);
   next();
 }
 
