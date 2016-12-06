@@ -1,4 +1,5 @@
 const moment = require('moment');
+const logger = require('./logger');
 
 const COVER_FACTORS = {
   basic: 1.8,
@@ -159,14 +160,15 @@ function getTimeFactor(departureDate, returnDate) {
 
 function compute(params) {
   const correction = computeCorrection(params.travellerAges);
+  const coverFactor = getCoverFactor(params.cover);
+  const countryFactor = getCountryFactor(params.country);
+  const ageFactor = getAgeFactor(params.travellerAges);
+  const timeFactor = getTimeFactor(params.departureDate, params.returnDate);
+  const optionsQuote = getOptionsQuote(params.options);
 
-  return correction * ((
-    getCoverFactor(params.cover)
-    * getCountryFactor(params.country)
-    * getAgeFactor(params.travellerAges)
-    * getTimeFactor(params.departureDate, params.returnDate)
-  )
-    + getOptionsQuote(params.options));
+  logger.info(`correction: ${correction} coverFactor: ${coverFactor} countryFactor: ${countryFactor} ageFactor: ${ageFactor} timeFactor: ${timeFactor} optionsQuote: ${optionsQuote}`);
+
+  return correction * ((coverFactor * countryFactor * ageFactor * timeFactor) + optionsQuote);
 }
 
 module.exports = {
