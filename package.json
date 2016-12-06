@@ -15,6 +15,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "moment": "^2.17.1",
+    "roman-numerals": "^0.3.2",
     "tail-stream": "^0.2.1",
     "winston": "^2.3.0"
   },
