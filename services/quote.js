@@ -115,13 +115,8 @@ function getAgeFactor(travellers) {
     }
   }, 0);
   const numberOfKids = travellers.filter((age) => age < 18).length;
-  const numberOfAdults = travellers.filter((age) => (age > 25 && age < 65)).length;
-  const numberOfYoungAdults = travellers.filter((age) => (age > 18 && age < 25)).length;
-
-  //Travelling alone malus
-  if(travellers.length === 1){
-    value = value * 1.05;
-  }
+  const numberOfAdults = travellers.filter((age) => (age >= 25 && age < 65)).length;
+  const numberOfYoungAdults = travellers.filter((age) => (age >= 18 && age < 25)).length;
 
   // Kids penalty 15%
   if (numberOfKids > numberOfAdults) {
@@ -129,7 +124,11 @@ function getAgeFactor(travellers) {
   }
 
   // Young adults 10% off
-  if (numberOfYoungAdults >= 2 && numberOfYoungAdults <= 5) {
+  if (numberOfYoungAdults === 2) {
+    value = value * 0.9;
+  }
+
+  if(numberOfYoungAdults >= 5){
     value = value * 0.9;
   }
 
@@ -140,6 +139,11 @@ function getAgeFactor(travellers) {
     const isFamily = atLeastTwoAdults && atLeastTwoKids;
 
     value = isFamily ? value * 0.8 : value;
+  }
+
+  //Travelling alone malus
+  if(travellers.length === 1){
+    value = value * 1.05;
   }
 
   return value;
