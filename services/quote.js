@@ -85,43 +85,6 @@ function getCountryFactor(country) {
   return value;
 }
 
-function computeCorrection(travellers) {
-  let correction = 1;
-
-  const numberOfKids = travellers.filter((age) => age < 18).length;
-  const numberOfAdults = travellers.filter((age) => (age >= 25 && age < 65)).length;
-  const numberOfYoungAdults = travellers.filter((age) => (age >= 18 && age < 25)).length;
-
-  // Kids penalty 15%
-  if (numberOfKids > numberOfAdults) {
-    correction += 0.15;
-  }
-
-  // Young adults 10% off
-  if (numberOfYoungAdults === 2) {
-    correction -= 0.1;
-  }
-  if(numberOfYoungAdults >= 5) {
-    correction -= 0.1;
-  }
-
-  // Family 20% off
-  if (travellers.length >= 4) {
-    const atLeastTwoKids = numberOfKids >= 2;
-    const atLeastTwoAdults = numberOfAdults >= 2;
-    const isFamily = atLeastTwoAdults && atLeastTwoKids;
-
-    correction -= isFamily ? 0.2 : 0;
-  }
-
-  // Travelling alone malus
-  if(travellers.length === 1){
-    correction += 0.05;
-  }
-
-  return correction;
-}
-
 function getAgeFactor(travellers) {
   return travellers.reduce((acc, age) => {
     if (Number.isNaN(age) || age < 0) {
@@ -151,24 +114,19 @@ function getOptionsQuote(options) {
 }
 
 function getTimeFactor(departureDate, returnDate) {
-  const numberOfDays = moment(returnDate).diff(moment(departureDate), 'days');
-
-  return numberOfDays < 10
-    ? 7
-    : numberOfDays;
+  return moment(returnDate).diff(moment(departureDate), 'days');
 }
 
 function compute(params) {
-  const correction = computeCorrection(params.travellerAges);
   const coverFactor = getCoverFactor(params.cover);
   const countryFactor = getCountryFactor(params.country);
   const ageFactor = getAgeFactor(params.travellerAges);
   const timeFactor = getTimeFactor(params.departureDate, params.returnDate);
   const optionsQuote = getOptionsQuote(params.options);
 
-  logger.info(`correction: ${correction} coverFactor: ${coverFactor} countryFactor: ${countryFactor} ageFactor: ${ageFactor} timeFactor: ${timeFactor} optionsQuote: ${optionsQuote}`);
+  logger.info(`coverFactor: ${coverFactor} countryFactor: ${countryFactor} ageFactor: ${ageFactor} timeFactor: ${timeFactor} optionsQuote: ${optionsQuote}`);
 
-  return correction * ((coverFactor * countryFactor * ageFactor * timeFactor) + optionsQuote);
+  return (coverFactor * countryFactor * ageFactor * timeFactor) + optionsQuote;
 }
 
 module.exports = {
