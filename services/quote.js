@@ -15,6 +15,7 @@ const COUNTRY_FACTORS = {
   ee: 1.3,
   lu: 1.3,
   gr: 0.6,
+  sl:0.6,
   it: 1.2,
   bg: 1.1,
   sw: 1.2,
@@ -40,7 +41,9 @@ const COUNTRY_FACTORS = {
   se: 1.2,
   sk: 0.7,
   at: 0.9,
-  kp: 6.9
+  kp: 6.9,
+  si: 0.8,
+  el: 0.6
 };
 
 const OPTIONS_FACTORS = {
@@ -98,7 +101,7 @@ function getCountryFactor(country) {
 }
 
 function getAgeFactor(travellers) {
-  return travellers.reduce((acc, age) => {
+  let value = travellers.reduce((acc, age) => {
     if (Number.isNaN(age) || age < 0) {
       throw new Error(`Invalid age ${age} (${travellers})`);
     } else if (age < 18) {
@@ -111,6 +114,35 @@ function getAgeFactor(travellers) {
       return acc + 1.5;
     }
   }, 0);
+  const numberOfKids = travellers.filter((age) => age < 18).length;
+  const numberOfAdults = travellers.filter((age) => (age > 25 && age < 65)).length;
+  const numberOfYoungAdults = travellers.filter((age) => (age > 18 && age < 25)).length;
+
+  //Travelling alone malus
+  if(travellers.length === 1){
+    value = value * 1.05;
+  }
+
+  // Kids penalty 15%
+  if (numberOfKids > numberOfAdults) {
+    value = value * 1.15;
+  }
+
+  // Young adults 10% off
+  if (numberOfYoungAdults >= 2 && numberOfYoungAdults <= 5) {
+    value = value * 0.9;
+  }
+
+  // Family 20% off
+  if (travellers.length >= 4) {
+    const atLeastTwoKids = numberOfKids >= 2;
+    const atLeastTwoAdults = numberOfAdults >= 2;
+    const isFamily = atLeastTwoAdults && atLeastTwoKids;
+
+    value = isFamily ? value * 0.8 : value;
+  }
+
+  return value;
 }
 
 function getOptionsQuote(options) {
@@ -127,7 +159,8 @@ function getOptionsQuote(options) {
 
 function getTimeFactor(departureDate, returnDate) {
   const numberOfDays = moment(returnDate).diff(moment(departureDate), 'days');
-  return numberOfDays <= 7
+
+  return numberOfDays < 10
     ? 7
     : numberOfDays;
 }
